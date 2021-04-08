@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+				<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+				<mapper namespace="com.mapper.ArticleMapper">
+					
+					<select id="listRecentArticle"  resultType="Article">
+						select * from Article order by article_id DESC limit #{n}
+					</select>
+					
+					<!-- 根据id查询文章 -->
+				<select id="getArticleById" resultType="Article" >
+					select * from  Article where article_id =#{articleId}
+				</select>
+				
+				<!-- 查询所有的文章 -->
+			<select id="findAll" resultType="Article">
+				select * from article order by article_id desc, article_order desc
+			</select>
+			
+			<!-- 添加文章 注意,一定要让它把生成的自增ID返回 -->
+					<insert id="addArticle" parameterType="Article"  useGeneratedKeys="true" keyProperty="articleId"  keyColumn="article_id" >
+						  insert into article
+						        (article_user_id, article_title,
+						        article_view_count, article_comment_count,
+						        article_like_count, article_create_time, article_update_time,
+						        article_is_comment, article_status, article_order,
+						        article_content, article_summary)
+						        values (#{articleUserId}, #{articleTitle},
+						        #{articleViewCount},
+						        #{articleCommentCount},
+						        #{articleLikeCount}, #{articleCreateTime},
+						        #{articleUpdateTime},
+						        #{articleIsComment}, #{articleStatus}, #{articleOrder},
+						        #{articleContent}, #{articleSummary})	
+					</insert>
+				</mapper>

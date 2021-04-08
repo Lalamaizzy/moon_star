@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta name="theme-color" content="#fff">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link href="css/index.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://api.map.baidu.com/api?type=webgl&v=1.0&ak=E4805d16520de693a3fe707cdc962045"></script>
+    <script type="text/javascript" src="https://lbsyun.baidu.com/map/resource/global/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/mapStyle.js"></script>
+    <script type="text/javascript" src="js/mapFun.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="./js/testdata.js"></script>
+    <script type="text/javascript" src="./js/nearbyOverlay.js"></script>
+    <title>新冠肺炎疫情分布</title>
+    
+</head>
+<body>
+    <div id="allmap"></div>
+    <div class="top-search-wrap">
+        <div class="top-search shadow-style">
+            <span class="top-search-icon"></span>
+            <label class="top-search-input">
+                <input type="text" placeholder="输入地点查看周边疫情场所" id="searchinput">
+            </label>
+            <div class="top-search-city"></div>
+            <div class="top-search-clear-btn" id="cancelBtn">取消</div>
+        </div>
+        <!-- <ul data-v-47f8a03e="" data-v-34f54b82="" class="tips">
+            <li data-v-47f8a03e="" class="tips-icon"></li>
+            <li class="tips-text">
+            各地卫健委等官方公布的【确诊】患者曾活动场所
+        </li></ul> -->
+        <div id="sugContainer">
+            <ul class="search-sug" id="searchResult">
+                <li class="search-sug-none">
+                    <span class="search-sug-none-icon"></span>
+                    <p class="search-sug-none-txt">您查找的场所暂未收录</p>
+                    <p class="search-sug-none-txt-s">请尝试更换名称继续查找</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <section class="card" id="inforcard">
+        <header>
+            <h1 class="card-title">
+                ***街道300号***小区
+            </h1>
+        </header>
+        <main class="card-main">
+            <ul class="card-main-position" v-if="cardData.position">
+                <template v-if="cardData.distance">
+                    <li class="card-main-position-distance">
+                        20KM
+                    </li>
+                    <li class="card-main-position-divider">**市**区***街道</li>
+                </template>
+                <li class="card-main-position-point">
+                </li>
+            </ul>
+            <p class="card-main-gather" v-if="cardData.gatheringPoi">
+                人流聚集地:***商场  小区菜市场
+            </p>
+            <ul class="card-main-from" v-if="cardData.persons || cardData.from">
+                <li class="card-main-from-logo"></li>
+                <li class="card-main-from-tips">
+                    <p v-if="cardData.from">该信息由**市**机构发布</p>
+                </li>
+            </ul>
+        </main>
+        <footer>
+            <ul class="card-footer" @click="onBtnClick" v-tab>
+                <li class="card-footer-img"></li>
+                <li class="card-footer-text">
+                </li>
+            </ul>
+        </footer>
+    </section>
+</body>
+</html>
+<script type="text/javascript">
+	 (function(win) {
+        var doc = win.document,html = doc.documentElement,option = html.getAttribute("data-use-rem") || '750';
+        if (option === null) return;
+        var baseWidth = parseInt(option).toString() === "NaN" ? 640 : parseInt(option);
+        var grids = baseWidth / 100;
+        var clientWidth = html.clientWidth || 320;
+        html.style.fontSize = clientWidth / grids + "px";
+        var testDom = document.createElement("div");
+        var testDomWidth = 0;var adjustRatio = 0;
+        testDom.style.cssText = "height:0;width:1rem;";
+        doc.body.appendChild(testDom);
+        var calcTestDom = function() {
+            testDomWidth = testDom.offsetWidth;
+            if (testDomWidth !== Math.round(clientWidth / grids)) {
+                adjustRatio = clientWidth / grids / testDomWidth;
+                var reCalcRem = clientWidth * adjustRatio / grids;
+                html.style.fontSize = reCalcRem + "px"
+            } else {
+                doc.body.removeChild(testDom)
+            }
+        };
+        setTimeout(calcTestDom, 20);
+        var reCalc = function() {
+            var newCW = html.clientWidth;
+            if (newCW === clientWidth) return;
+            clientWidth = newCW;
+            html.style.fontSize = newCW * (adjustRatio ? adjustRatio: 1) / grids + "px"
+        };
+        if (!doc.addEventListener) return;
+        var resizeEvt = "orientationchange" in win ? "orientationchange": "resize";
+        win.addEventListener(resizeEvt, reCalc, false);
+        doc.addEventListener("DOMContentLoaded", reCalc, false)
+    })(window);
+</script>
